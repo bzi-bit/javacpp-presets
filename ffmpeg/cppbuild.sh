@@ -1629,7 +1629,7 @@ EOF
         CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $WEBP_CONFIG -DCMAKE_SYSTEM_NAME=Darwin -DCMAKE_SYSTEM_VERSION=1 -DCMAKE_SYSTEM_PROCESSOR=armv8 -DCMAKE_CXX_FLAGS="$CXXFLAGS -fPIC" -DCMAKE_C_FLAGS="$CFLAGS -fPIC" -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" .
         make -j $MAKEJ V=0
         make install
-        cd ../arfbuzz-$HARFBUZZ_VERSION
+        cd ../harfbuzz-$HARFBUZZ_VERSION
         ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=aarch64-apple-darwin
         make -j $MAKEJ
         make install
@@ -1756,7 +1756,7 @@ EOF
         CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $WEBP_CONFIG .
         make -j $MAKEJ V=0
         make install
-        cd ../arfbuzz-$HARFBUZZ_VERSION
+        cd ../harfbuzz-$HARFBUZZ_VERSION
         ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic
         make -j $MAKEJ
         make install
@@ -1884,17 +1884,14 @@ EOF
         CC="gcc -m32" CXX="g++ -m32" CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -G "MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $WEBP_CONFIG .
         make -j $MAKEJ V=0
         make install
+        cd ../harfbuzz-$HARFBUZZ_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=i686-w64-mingw32 CFLAGS="-m32"
+        make -j $MAKEJ
+        make install
         cd ../freetype-$FREETYPE_VERSION
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=i686-w64-mingw32 CFLAGS="-m32"
         make -j $MAKEJ
         make install
-        cd ../mfx_dispatch-$MFX_VERSION
-        sedinplace 's:${SOURCES}:${SOURCES} src/mfx_driver_store_loader.cpp:g' CMakeLists.txt
-        CC="gcc -m32" CXX="g++ -m32" $CMAKE -G "MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release .
-        make -j $MAKEJ
-        make install
-        cd ../nv-codec-headers-n$NVCODEC_VERSION
-        make install PREFIX=$INSTALL_PATH
         echo ""
         echo "--------------------"
         echo "Building fribidi"
@@ -1908,6 +1905,13 @@ EOF
         ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=i686-w64-mingw32 CFLAGS="-m32"
         make -j $MAKEJ V=0
         make install
+        cd ../mfx_dispatch-$MFX_VERSION
+        sedinplace 's:${SOURCES}:${SOURCES} src/mfx_driver_store_loader.cpp:g' CMakeLists.txt
+        CC="gcc -m32" CXX="g++ -m32" $CMAKE -G "MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release .
+        make -j $MAKEJ
+        make install
+        cd ../nv-codec-headers-n$NVCODEC_VERSION
+        make install PREFIX=$INSTALL_PATH
         cd ../ffmpeg-$FFMPEG_VERSION
         PKG_CONFIG_PATH=../lib/pkgconfig/ ./configure --prefix=.. $DISABLE $ENABLE --enable-cuda --enable-cuvid --enable-nvenc --enable-libmfx --enable-w32threads --enable-indev=dshow --target-os=mingw32 --cc="gcc -m32" --extra-cflags="-DLIBXML_STATIC -I../include/ -I../include/libxml2/" --extra-ldflags="-L../lib/" --extra-libs="-static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lgcc_eh -lWs2_32 -lcrypt32 -lpthread -lz -lm -Wl,-Bdynamic -lole32 -luuid"
         make -j $MAKEJ
@@ -2014,17 +2018,15 @@ EOF
         CC="gcc -m64" CXX="g++ -m64" CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -G "MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $WEBP_CONFIG .
         make -j $MAKEJ V=0
         make install
+        cd ../harfbuzz-$HARFBUZZ_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=i686-w64-mingw32 CFLAGS="-m64"
+        make -j $MAKEJ
+        make install
         cd ../freetype-$FREETYPE_VERSION
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=x86_64-w64-mingw32 CFLAGS="-m64"
         make -j $MAKEJ
         make install
-        cd ../mfx_dispatch-$MFX_VERSION
-        sedinplace 's:${SOURCES}:${SOURCES} src/mfx_driver_store_loader.cpp:g' CMakeLists.txt
-        CC="gcc -m64" CXX="g++ -m64" $CMAKE -G "MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release .
-        make -j $MAKEJ
-        make install
-        cd ../nv-codec-headers-n$NVCODEC_VERSION
-        make install PREFIX=$INSTALL_PATH
+
         echo ""
         echo "--------------------"
         echo "Building fribidi"
@@ -2038,6 +2040,13 @@ EOF
         ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=x86_64-w64-mingw32 CFLAGS="-m64"
         make -j $MAKEJ V=0
         make install
+        cd ../mfx_dispatch-$MFX_VERSION
+        sedinplace 's:${SOURCES}:${SOURCES} src/mfx_driver_store_loader.cpp:g' CMakeLists.txt
+        CC="gcc -m64" CXX="g++ -m64" $CMAKE -G "MSYS Makefiles" -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH -DBUILD_SHARED_LIBS=OFF -DCMAKE_BUILD_TYPE=Release .
+        make -j $MAKEJ
+        make install
+        cd ../nv-codec-headers-n$NVCODEC_VERSION
+        make install PREFIX=$INSTALL_PATH
         cd ../ffmpeg-$FFMPEG_VERSION
         PKG_CONFIG_PATH=../lib/pkgconfig/ ./configure --prefix=.. $DISABLE $ENABLE --enable-cuda --enable-cuvid --enable-nvenc --enable-libmfx --enable-w32threads --enable-indev=dshow --target-os=mingw32 --cc="gcc -m64" --extra-cflags="-DLIBXML_STATIC -I../include/ -I../include/libxml2/" --extra-ldflags="-L../lib/" --extra-libs="-static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lgcc_eh -lWs2_32 -lcrypt32 -lpthread -lz -lm -Wl,-Bdynamic -lole32 -luuid"
         make -j $MAKEJ
