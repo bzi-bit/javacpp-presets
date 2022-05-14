@@ -44,6 +44,8 @@ LIBSRT_VERSION=1.4.4
 WEBP_VERSION=1.2.2
 LIBASS_VERSION=0.16.0
 FRIBIDI_VERSION=1.0.12
+FONT_CONF_VERSION=2.13.96
+HARFBUZZ_VERSION=4.2.0
 FFMPEG_VERSION=5.0.1
 download https://download.videolan.org/contrib/nasm/nasm-$NASM_VERSION.tar.gz nasm-$NASM_VERSION.tar.gz
 download http://zlib.net/$ZLIB.tar.gz $ZLIB.tar.gz
@@ -66,6 +68,8 @@ download https://github.com/FFmpeg/nv-codec-headers/archive/n$NVCODEC_VERSION.ta
 download https://github.com/webmproject/libwebp/archive/refs/tags/v$WEBP_VERSION.tar.gz libwebp-$WEBP_VERSION.tar.gz
 download https://github.com/libass/libass/releases/download/$LIBASS_VERSION/libass-$LIBASS_VERSION.tar.gz libass-$LIBASS_VERSION.tar.gz
 download https://github.com/fribidi/fribidi/releases/download/v$FRIBIDI_VERSION/fribidi-$FRIBIDI_VERSION.tar.xz fribidi-$FRIBIDI_VERSION.tar.xz
+download https://www.freedesktop.org/software/fontconfig/release/fontconfig-$FONT_CONF_VERSION.tar.xz fontconfig-$FONT_CONF_VERSION.tar.xz
+download https://github.com/harfbuzz/harfbuzz/releases/download/4.2.0/harfbuzz-$HARFBUZZ_VERSION.tar.xz harfbuzz-$HARFBUZZ_VERSION.tar.xz
 download http://ffmpeg.org/releases/ffmpeg-$FFMPEG_VERSION.tar.bz2 ffmpeg-$FFMPEG_VERSION.tar.bz2
 
 mkdir -p $PLATFORM$EXTENSION
@@ -86,6 +90,8 @@ tar --totals -xzf ../$X264.tar.gz
 tar --totals -xzf ../x265-$X265.tar.gz
 tar --totals -xzf ../libvpx-$VPX_VERSION.tar.gz
 tar --totals -xJf ../freetype-$FREETYPE_VERSION.tar.xz
+tar --totals -xJf ../fontconfig-$FONT_CONF_VERSION.tar.xz
+tar --totals -xJf ../harfbuzz-$HARFBUZZ_VERSION.tar.xz
 tar --totals -xzf ../mfx_dispatch-$MFX_VERSION.tar.gz
 tar --totals -xzf ../nv-codec-headers-$NVCODEC_VERSION.tar.gz
 tar --totals -xzf ../$XML2.tar.gz
@@ -241,6 +247,10 @@ EOF
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=arm-linux
         make -j $MAKEJ
         make install
+        cd ../fontconfig-$FONT_CONF_VERSION
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=arm-linux
+        make -j $MAKEJ
+        make install
         echo ""
         echo "--------------------"
         echo "Building fribidi"
@@ -385,6 +395,10 @@ EOF
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=aarch64-linux
         make -j $MAKEJ
         make install
+        cd ../fontconfig-$FONT_CONF_VERSION
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=aarch64-linux
+        make -j $MAKEJ
+        make install
         echo ""
         echo "--------------------"
         echo "Building fribidi"
@@ -526,6 +540,10 @@ EOF
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=i686-linux
         make -j $MAKEJ
         make install
+        cd ../fontconfig-$FONT_CONF_VERSION
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux
+        make -j $MAKEJ
+        make install
         echo ""
         echo "--------------------"
         echo "Building fribidi"
@@ -664,6 +682,10 @@ EOF
         make install
         cd ../freetype-$FREETYPE_VERSION
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=x86_64-linux
+        make -j $MAKEJ
+        make install
+        cd ../fontconfig-$FONT_CONF_VERSION
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=x86_64-linux
         make -j $MAKEJ
         make install
         echo ""
@@ -1607,6 +1629,10 @@ EOF
         CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $WEBP_CONFIG -DCMAKE_SYSTEM_NAME=Darwin -DCMAKE_SYSTEM_VERSION=1 -DCMAKE_SYSTEM_PROCESSOR=armv8 -DCMAKE_CXX_FLAGS="$CXXFLAGS -fPIC" -DCMAKE_C_FLAGS="$CFLAGS -fPIC" -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" .
         make -j $MAKEJ V=0
         make install
+        cd ../arfbuzz-$HARFBUZZ_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=aarch64-apple-darwin
+        make -j $MAKEJ
+        make install
         cd ../freetype-$FREETYPE_VERSION
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=aarch64-apple-darwin
         make -j $MAKEJ
@@ -1729,6 +1755,10 @@ EOF
         cd ../libwebp-$WEBP_VERSION
         CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $WEBP_CONFIG .
         make -j $MAKEJ V=0
+        make install
+        cd ../arfbuzz-$HARFBUZZ_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic
+        make -j $MAKEJ
         make install
         cd ../freetype-$FREETYPE_VERSION
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic
