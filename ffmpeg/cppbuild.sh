@@ -241,6 +241,19 @@ EOF
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=arm-linux
         make -j $MAKEJ
         make install
+        echo ""
+        echo "--------------------"
+        echo "Building fribidi"
+        echo "--------------------"
+        echo ""
+        cd ../fribidi-$FRIBIDI_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=arm-linux
+        make -j $MAKEJ V=0
+        make install
+        cd ../libass-$LIBASS_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=arm-linux
+        make -j $MAKEJ V=0
+        make install
         cd ../ffmpeg-$FFMPEG_VERSION
         sedinplace 's/unsigned long int/unsigned int/g' libavdevice/v4l2.c
         LDEXEFLAGS='-Wl,-rpath,\$$ORIGIN/' ./configure --prefix=.. $DISABLE $ENABLE --enable-jni --enable-mediacodec --enable-pthreads --enable-cross-compile --cross-prefix="$ANDROID_PREFIX-" --ar="$AR" --ranlib="$RANLIB" --cc="$CC" --strip="$STRIP" --sysroot="$ANDROID_ROOT" --target-os=android --arch=arm --extra-cflags="-I../include/ -I../include/libxml2 $ANDROID_FLAGS" --extra-ldflags="-L../lib/ $ANDROID_FLAGS" --extra-libs="$ANDROID_LIBS -lz -latomic" --disable-symver
@@ -372,6 +385,19 @@ EOF
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=aarch64-linux
         make -j $MAKEJ
         make install
+        echo ""
+        echo "--------------------"
+        echo "Building fribidi"
+        echo "--------------------"
+        echo ""
+        cd ../fribidi-$FRIBIDI_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=aarch64-linux
+        make -j $MAKEJ V=0
+        make install
+        cd ../libass-$LIBASS_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=aarch64-linux
+        make -j $MAKEJ V=0
+        make install
         cd ../ffmpeg-$FFMPEG_VERSION
         sedinplace 's/unsigned long int/unsigned int/g' libavdevice/v4l2.c
         LDEXEFLAGS='-Wl,-rpath,\$$ORIGIN/' ./configure --prefix=.. $DISABLE $ENABLE --enable-jni --enable-mediacodec --enable-pthreads --enable-cross-compile --cross-prefix="$ANDROID_PREFIX-" --ar="$AR" --ranlib="$RANLIB" --cc="$CC" --strip="$STRIP" --sysroot="$ANDROID_ROOT" --target-os=android --arch=aarch64 --extra-cflags="-I../include/ -I../include/libxml2 $ANDROID_FLAGS" --extra-ldflags="-L../lib/ $ANDROID_FLAGS" --extra-libs="$ANDROID_LIBS -lz -latomic" --disable-symver
@@ -500,6 +526,19 @@ EOF
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=i686-linux
         make -j $MAKEJ
         make install
+        echo ""
+        echo "--------------------"
+        echo "Building fribidi"
+        echo "--------------------"
+        echo ""
+        cd ../fribidi-$FRIBIDI_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=i686-linux
+        make -j $MAKEJ V=0
+        make install
+        cd ../libass-$LIBASS_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=i686-linux
+        make -j $MAKEJ V=0
+        make install
         cd ../ffmpeg-$FFMPEG_VERSION
         sedinplace 's/unsigned long int/unsigned int/g' libavdevice/v4l2.c
         LDEXEFLAGS='-Wl,-rpath,\$$ORIGIN/' ./configure --prefix=.. $DISABLE $ENABLE --enable-jni --enable-mediacodec --enable-pthreads --enable-cross-compile --cross-prefix="$ANDROID_PREFIX-" --ar="$AR" --ranlib="$RANLIB" --cc="$CC" --strip="$STRIP" --sysroot="$ANDROID_ROOT" --target-os=android --arch=atom --extra-cflags="-I../include/ -I../include/libxml2 $ANDROID_FLAGS" --extra-ldflags="-L../lib/ $ANDROID_FLAGS" --extra-libs="$ANDROID_LIBS -lz -latomic" --disable-symver
@@ -627,6 +666,19 @@ EOF
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=x86_64-linux
         make -j $MAKEJ
         make install
+        echo ""
+        echo "--------------------"
+        echo "Building fribidi"
+        echo "--------------------"
+        echo ""
+        cd ../fribidi-$FRIBIDI_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=x86_64-linux
+        make -j $MAKEJ V=0
+        make install
+        cd ../libass-$LIBASS_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=x86_64-linux
+        make -j $MAKEJ V=0
+        make install
         cd ../ffmpeg-$FFMPEG_VERSION
         sedinplace 's/unsigned long int/unsigned int/g' libavdevice/v4l2.c
         LDEXEFLAGS='-Wl,-rpath,\$$ORIGIN/' ./configure --prefix=.. $DISABLE $ENABLE --enable-jni --enable-mediacodec --enable-pthreads --enable-cross-compile --cross-prefix="$ANDROID_PREFIX-" --ar="$AR" --ranlib="$RANLIB" --cc="$CC" --strip="$STRIP" --sysroot="$ANDROID_ROOT" --target-os=android --arch=atom --extra-cflags="-I../include/ -I../include/libxml2 $ANDROID_FLAGS" --extra-ldflags="-L../lib/ $ANDROID_FLAGS" --extra-libs="$ANDROID_LIBS -lz -latomic" --disable-symver
@@ -753,6 +805,19 @@ EOF
         fi
         cd ../nv-codec-headers-n$NVCODEC_VERSION
         make install PREFIX=$INSTALL_PATH
+        echo ""
+        echo "--------------------"
+        echo "Building fribidi"
+        echo "--------------------"
+        echo ""
+        cd ../fribidi-$FRIBIDI_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=i686-linux CFLAGS="-m32" CXXFLAGS="-m32"
+        make -j $MAKEJ V=0
+        make install
+        cd ../libass-$LIBASS_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=i686-linux CFLAGS="-m32" CXXFLAGS="-m32"
+        make -j $MAKEJ V=0
+        make install
         cd ../ffmpeg-$FFMPEG_VERSION
         LDEXEFLAGS='-Wl,-rpath,\$$ORIGIN/' PKG_CONFIG_PATH=../lib/pkgconfig/ ./configure --prefix=.. $DISABLE $ENABLE --enable-cuda --enable-cuvid --enable-nvenc --enable-pthreads --enable-libxcb --cc="gcc -m32 -D__ILP32__" --extra-cflags="-I../include/ -I../include/libxml2" --extra-ldflags="-L../lib/" --extra-libs="-lstdc++ -lpthread -ldl -lz -lm $LIBS"
         make -j $MAKEJ
@@ -1064,6 +1129,19 @@ EOF
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=arm-linux-gnueabihf
         make -j $MAKEJ
         make install
+        echo ""
+        echo "--------------------"
+        echo "Building fribidi"
+        echo "--------------------"
+        echo ""
+        cd ../fribidi-$FRIBIDI_VERSION
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=arm-linux-gnueabihf
+        make -j $MAKEJ V=0
+        make install
+        cd ../libass-$LIBASS_VERSION
+        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=arm-linux-gnueabihf
+        make -j $MAKEJ V=0
+        make install
         cd ../ffmpeg-$FFMPEG_VERSION
         if [ $CROSSCOMPILE -eq 1 ]
         then
@@ -1194,6 +1272,19 @@ EOF
         cd ../freetype-$FREETYPE_VERSION
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=aarch64-linux-gnu
         make -j $MAKEJ
+        make install
+        echo ""
+        echo "--------------------"
+        echo "Building fribidi"
+        echo "--------------------"
+        echo ""
+        cd ../fribidi-$FRIBIDI_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=aarch64-linux-gnu
+        make -j $MAKEJ V=0
+        make install
+        cd ../libass-$LIBASS_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=aarch64-linux-gnu
+        make -j $MAKEJ V=0
         make install
         cd ../ffmpeg-$FFMPEG_VERSION
         if [[ ! -d $USERLAND_PATH ]]; then
@@ -1381,7 +1472,28 @@ EOF
           CC="powerpc64le-linux-gnu-gcc" CXX="powerpc64le-linux-gnu-g++" ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=powerpc64le-linux-gnu --build=ppc64le-linux CFLAGS="-m64"
         fi
         make -j $MAKEJ
-        make install 
+        make install
+        echo ""
+        echo "--------------------"
+        echo "Building fribidi"
+        echo "--------------------"
+        echo ""
+        cd ../fribidi-$FRIBIDI_VERSION
+        if [[ "$MACHINE_TYPE" =~ ppc64 ]]; then
+          ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --target=ppc64le-linux CFLAGS="-m64"
+        else
+          CC="powerpc64le-linux-gnu-gcc" CXX="powerpc64le-linux-gnu-g++" ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=powerpc64le-linux-gnu --build=ppc64le-linux CFLAGS="-m64"
+        fi
+        make -j $MAKEJ V=0
+        make install
+        cd ../libass-$LIBASS_VERSION
+        if [[ "$MACHINE_TYPE" =~ ppc64 ]]; then
+          ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --target=ppc64le-linux CFLAGS="-m64"
+        else
+          CC="powerpc64le-linux-gnu-gcc" CXX="powerpc64le-linux-gnu-g++" ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=powerpc64le-linux-gnu --build=ppc64le-linux CFLAGS="-m64"
+        fi
+        make -j $MAKEJ V=0
+        make install
         cd ../ffmpeg-$FFMPEG_VERSION
         if [[ "$MACHINE_TYPE" =~ ppc64 ]]; then
           LDEXEFLAGS='-Wl,-rpath,\$$ORIGIN/' PKG_CONFIG_PATH=../lib/pkgconfig/ ./configure --prefix=.. $DISABLE $ENABLE --enable-pthreads --enable-libxcb --cc="gcc -m64" --extra-cflags="-I../include/ -I../include/libxml2" --extra-ldflags="-L../lib/" --extra-libs="-lstdc++ -ldl -lz -lm" --disable-altivec
@@ -1499,6 +1611,19 @@ EOF
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=aarch64-apple-darwin
         make -j $MAKEJ
         make install
+        echo ""
+        echo "--------------------"
+        echo "Building fribidi"
+        echo "--------------------"
+        echo ""
+        cd ../fribidi-$FRIBIDI_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=aarch64-apple-darwin
+        make -j $MAKEJ V=0
+        make install
+        cd ../libass-$LIBASS_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=aarch64-apple-darwin
+        make -j $MAKEJ V=0
+        make install
         cd ../ffmpeg-$FFMPEG_VERSION
         patch -Np1 < ../../../ffmpeg-macosx.patch
         LDEXEFLAGS='-Wl,-rpath,@loader_path/' PKG_CONFIG_PATH=../lib/pkgconfig/ ./configure --prefix=.. $DISABLE $ENABLE --enable-pthreads --enable-indev=avfoundation --disable-libxcb --cc="clang -arch arm64" --extra-cflags="-I../include/ -I../include/libxml2" --extra-ldflags="-L../lib/" --extra-libs="-lstdc++ -ldl -lz -lm" --enable-cross-compile --arch=arm64 --target-os=darwin
@@ -1608,6 +1733,19 @@ EOF
         cd ../freetype-$FREETYPE_VERSION
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic
         make -j $MAKEJ
+        make install
+        echo ""
+        echo "--------------------"
+        echo "Building fribidi"
+        echo "--------------------"
+        echo ""
+        cd ../fribidi-$FRIBIDI_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic
+        make -j $MAKEJ V=0
+        make install
+        cd ../libass-$LIBASS_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic
+        make -j $MAKEJ V=0
         make install
         cd ../ffmpeg-$FFMPEG_VERSION
         patch -Np1 < ../../../ffmpeg-macosx.patch
@@ -1727,6 +1865,19 @@ EOF
         make install
         cd ../nv-codec-headers-n$NVCODEC_VERSION
         make install PREFIX=$INSTALL_PATH
+        echo ""
+        echo "--------------------"
+        echo "Building fribidi"
+        echo "--------------------"
+        echo ""
+        cd ../fribidi-$FRIBIDI_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=i686-w64-mingw32 CFLAGS="-m32"
+        make -j $MAKEJ V=0
+        make install
+        cd ../libass-$LIBASS_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=i686-w64-mingw32 CFLAGS="-m32"
+        make -j $MAKEJ V=0
+        make install
         cd ../ffmpeg-$FFMPEG_VERSION
         PKG_CONFIG_PATH=../lib/pkgconfig/ ./configure --prefix=.. $DISABLE $ENABLE --enable-cuda --enable-cuvid --enable-nvenc --enable-libmfx --enable-w32threads --enable-indev=dshow --target-os=mingw32 --cc="gcc -m32" --extra-cflags="-DLIBXML_STATIC -I../include/ -I../include/libxml2/" --extra-ldflags="-L../lib/" --extra-libs="-static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lgcc_eh -lWs2_32 -lcrypt32 -lpthread -lz -lm -Wl,-Bdynamic -lole32 -luuid"
         make -j $MAKEJ
@@ -1765,7 +1916,7 @@ EOF
         echo "--------------------"
         echo ""
         cd ../$SPEEX
-        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --build=x86_64-w64-mingw32 CFLAGS="-m64"
+        ./configure --prefix=$INSTALL_PATH --disable-frontend --disable-shared --with-pic --build=x86_64-w64-mingw32 CFLAGS="-m64"
         make -j $MAKEJ V=0
         make install
         cd ../$OPUS
@@ -1844,6 +1995,19 @@ EOF
         make install
         cd ../nv-codec-headers-n$NVCODEC_VERSION
         make install PREFIX=$INSTALL_PATH
+        echo ""
+        echo "--------------------"
+        echo "Building fribidi"
+        echo "--------------------"
+        echo ""
+        cd ../fribidi-$FRIBIDI_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=x86_64-w64-mingw32 CFLAGS="-m64"
+        make -j $MAKEJ V=0
+        make install
+        cd ../libass-$LIBASS_VERSION
+        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=x86_64-w64-mingw32 CFLAGS="-m64"
+        make -j $MAKEJ V=0
+        make install
         cd ../ffmpeg-$FFMPEG_VERSION
         PKG_CONFIG_PATH=../lib/pkgconfig/ ./configure --prefix=.. $DISABLE $ENABLE --enable-cuda --enable-cuvid --enable-nvenc --enable-libmfx --enable-w32threads --enable-indev=dshow --target-os=mingw32 --cc="gcc -m64" --extra-cflags="-DLIBXML_STATIC -I../include/ -I../include/libxml2/" --extra-ldflags="-L../lib/" --extra-libs="-static-libgcc -static-libstdc++ -Wl,-Bstatic -lstdc++ -lgcc_eh -lWs2_32 -lcrypt32 -lpthread -lz -lm -Wl,-Bdynamic -lole32 -luuid"
         make -j $MAKEJ
