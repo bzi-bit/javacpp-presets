@@ -248,7 +248,7 @@ EOF
         make -j $MAKEJ
         make install
         cd ../fontconfig-$FONT_CONF_VERSION
-        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=arm-linux
+        ./configure --prefix=$INSTALL_PATH --enable-libxml2 --disable-shared --with-pic --host=arm-linux
         make -j $MAKEJ
         make install
         echo ""
@@ -396,7 +396,7 @@ EOF
         make -j $MAKEJ
         make install
         cd ../fontconfig-$FONT_CONF_VERSION
-        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=aarch64-linux
+        ./configure --prefix=$INSTALL_PATH --enable-libxml2 --disable-shared --with-pic --host=aarch64-linux
         make -j $MAKEJ
         make install
         echo ""
@@ -541,7 +541,7 @@ EOF
         make -j $MAKEJ
         make install
         cd ../fontconfig-$FONT_CONF_VERSION
-        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=i686-linux
+        ./configure --prefix=$INSTALL_PATH --enable-libxml2 --disable-shared --with-pic --host=i686-linux
         make -j $MAKEJ
         make install
         echo ""
@@ -685,7 +685,7 @@ EOF
         make -j $MAKEJ
         make install
         cd ../fontconfig-$FONT_CONF_VERSION
-        ./configure --prefix=$INSTALL_PATH --disable-shared --with-pic --host=x86_64-linux
+        ./configure --prefix=$INSTALL_PATH --enable-libxml2 --disable-shared --with-pic --host=x86_64-linux
         make -j $MAKEJ
         make install
         echo ""
@@ -1629,10 +1629,6 @@ EOF
         CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $WEBP_CONFIG -DCMAKE_SYSTEM_NAME=Darwin -DCMAKE_SYSTEM_VERSION=1 -DCMAKE_SYSTEM_PROCESSOR=armv8 -DCMAKE_CXX_FLAGS="$CXXFLAGS -fPIC" -DCMAKE_C_FLAGS="$CFLAGS -fPIC" -DCMAKE_C_COMPILER="clang" -DCMAKE_CXX_COMPILER="clang++" .
         make -j $MAKEJ V=0
         make install
-        cd ../harfbuzz-$HARFBUZZ_VERSION
-        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=aarch64-apple-darwin
-        make -j $MAKEJ
-        make install
         cd ../freetype-$FREETYPE_VERSION
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=aarch64-apple-darwin
         make -j $MAKEJ
@@ -1643,11 +1639,11 @@ EOF
         echo "--------------------"
         echo ""
         cd ../fribidi-$FRIBIDI_VERSION
-        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=aarch64-apple-darwin
+        ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=aarch64-apple-darwin
         make -j $MAKEJ V=0
         make install
         cd ../libass-$LIBASS_VERSION
-        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic --host=aarch64-apple-darwin
+        ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic --host=aarch64-apple-darwin
         make -j $MAKEJ V=0
         make install
         cd ../ffmpeg-$FFMPEG_VERSION
@@ -1756,10 +1752,10 @@ EOF
         CFLAGS="-I$INSTALL_PATH/include/" CXXFLAGS="-I$INSTALL_PATH/include/" LDFLAGS="-L$INSTALL_PATH/lib/" $CMAKE -DCMAKE_INSTALL_PREFIX=$INSTALL_PATH $WEBP_CONFIG .
         make -j $MAKEJ V=0
         make install
-        cd ../harfbuzz-$HARFBUZZ_VERSION
-        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic
-        make -j $MAKEJ
-        make install
+#        cd ../harfbuzz-$HARFBUZZ_VERSION
+#        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic
+#        make -j $MAKEJ
+#        make install
         cd ../freetype-$FREETYPE_VERSION
         ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic
         make -j $MAKEJ
@@ -1770,11 +1766,11 @@ EOF
         echo "--------------------"
         echo ""
         cd ../fribidi-$FRIBIDI_VERSION
-        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic
+        ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic
         make -j $MAKEJ V=0
         make install
         cd ../libass-$LIBASS_VERSION
-        ./configure --prefix=$INSTALL_PATH --enable-static --disable-shared --with-pic
+        ./configure --prefix=$INSTALL_PATH --with-bzip2=no --with-harfbuzz=no --with-png=no --with-brotli=no --enable-static --disable-shared --with-pic
         make -j $MAKEJ V=0
         make install
         cd ../ffmpeg-$FFMPEG_VERSION
