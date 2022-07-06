@@ -11,7 +11,6 @@ import static org.bytedeco.javacpp.presets.javacpp.*;
 import static org.bytedeco.onnx.global.onnx.*;
 
 
-
 // Node is the base class of the IR graph. It represents one computation
 // and dependencies on a list of Values. The "prim-ops", so to speak.
 @Namespace("onnx") @Opaque @Properties(inherit = org.bytedeco.onnx.presets.onnx.class)

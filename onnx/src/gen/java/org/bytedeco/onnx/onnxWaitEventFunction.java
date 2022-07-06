@@ -17,6 +17,5 @@ public class onnxWaitEventFunction extends FunctionPointer {
     public    onnxWaitEventFunction(Pointer p) { super(p); }
     protected onnxWaitEventFunction() { allocate(); }
     private native void allocate();
-    public native @Cast("onnxStatus") int call(
-    onnxEvent event);
+    public native @Cast("onnxStatus") int call(onnxEvent event);
 }

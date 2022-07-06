@@ -130,11 +130,7 @@ public class depthai extends org.bytedeco.depthai.presets.depthai {
 // #endif
 
 public static final int XLINK_MAX_MX_ID_SIZE = 32;
-
-// #ifdef XLINK_USE_MX_ID_NAME
-public static final int XLINK_MAX_NAME_SIZE = (XLINK_MAX_MX_ID_SIZE + 16); // additional space for device name (see supportedDevices)
-// #else
-// #endif
+public static final int XLINK_MAX_NAME_SIZE = 64;
 
 // #ifdef XLINK_MAX_STREAM_RES
 // #else
@@ -164,7 +160,9 @@ public static final int
     X_LINK_TIMEOUT = 6,
     X_LINK_ERROR = 7,
     X_LINK_OUT_OF_MEMORY = 8,
-    X_LINK_NOT_IMPLEMENTED = 9;
+    X_LINK_INSUFFICIENT_PERMISSIONS = 9,
+    X_LINK_DEVICE_ALREADY_IN_USE = 10,
+    X_LINK_NOT_IMPLEMENTED = 11;
 
 /** enum XLinkProtocol_t */
 public static final int
@@ -290,10 +288,14 @@ public static final int
 
 // #include <string>
 
-@Namespace("dai") public static native @Cast("bool") boolean initialize(@StdString BytePointer additionalInfo/*=""*/, @Cast("bool") boolean installSignalHandler/*=true*/);
 @Namespace("dai") public static native @Cast("bool") boolean initialize();
-@Namespace("dai") public static native @Cast("bool") boolean initialize(@StdString ByteBuffer additionalInfo/*=""*/, @Cast("bool") boolean installSignalHandler/*=true*/);
-@Namespace("dai") public static native @Cast("bool") boolean initialize(@StdString String additionalInfo/*=""*/, @Cast("bool") boolean installSignalHandler/*=true*/);
+@Namespace("dai") public static native @Cast("bool") boolean initialize(@StdString BytePointer additionalInfo, @Cast("bool") boolean installSignalHandler/*=true*/, Pointer javavm/*=nullptr*/);
+@Namespace("dai") public static native @Cast("bool") boolean initialize(@StdString BytePointer additionalInfo);
+@Namespace("dai") public static native @Cast("bool") boolean initialize(@StdString ByteBuffer additionalInfo, @Cast("bool") boolean installSignalHandler/*=true*/, Pointer javavm/*=nullptr*/);
+@Namespace("dai") public static native @Cast("bool") boolean initialize(@StdString ByteBuffer additionalInfo);
+@Namespace("dai") public static native @Cast("bool") boolean initialize(@StdString String additionalInfo, @Cast("bool") boolean installSignalHandler/*=true*/, Pointer javavm/*=nullptr*/);
+@Namespace("dai") public static native @Cast("bool") boolean initialize(@StdString String additionalInfo);
+@Namespace("dai") public static native @Cast("bool") boolean initialize(Pointer javavm);
 
   // namespace dai
 
@@ -354,13 +356,8 @@ public static final int
 // #include <nop/utility/buffer_reader.h>
 // #include <nop/utility/stream_writer.h>
 
-// #include <nlohmann/json.hpp>
-
-// Check version of nlohmann json
-// #if(defined(NLOHMANN_JSON_VERSION_MAJOR) && defined(NLOHMANN_JSON_VERSION_MINOR))
-//     #if((NLOHMANN_JSON_VERSION_MAJOR < 3) || ((NLOHMANN_JSON_VERSION_MAJOR == 3) && (NLOHMANN_JSON_VERSION_MINOR < 9)))
-//     #endif
-// #endif
+// project
+// #include "NlohmannJsonCompat.hpp"
 
 // To not require exceptions for embedded usecases.
 // #ifndef __has_feature           // Optional of course.
@@ -414,20 +411,45 @@ public static final int
 
 // #define DEPTHAI_DEFERRED_EXPAND(x) x
 // #if defined(_MSC_VER) && (!defined(_MSVC_TRADITIONAL) || _MSVC_TRADITIONAL)
-
-    // Logic using the traditional preprocessor
+   // Logic using the traditional preprocessor
     // This is for suppressing false positive warnings when compiling
     // without /Zc:preprocessor
 //     #pragma warning(disable : 4003)
 // #endif
 
+// #define DEPTHAI_NLOHMANN_JSON_OPTIONAL_TO(v1) nlohmann::to_json(nlohmann_json_j[#v1], nlohmann_json_t.v1);
+// #define DEPTHAI_NLOHMANN_JSON_OPTIONAL_FROM(v1)
+//     if(nlohmann_json_j.contains(#v1)) nlohmann_json_j[#v1].get_to(nlohmann_json_t.v1);
+// #define DEPTHAI_NLOHMANN_DEFINE_TYPE_OPTIONAL_NON_INTRUSIVE(Type, ...)
+//     inline void to_json(nlohmann::json& nlohmann_json_j, const Type& nlohmann_json_t) {
+//         DEPTHAI_NLOHMANN_JSON_EXPAND(DEPTHAI_NLOHMANN_JSON_PASTE(DEPTHAI_NLOHMANN_JSON_OPTIONAL_TO, __VA_ARGS__))
+//     }
+//     inline void from_json(const nlohmann::json& nlohmann_json_j, Type& nlohmann_json_t) {
+//         DEPTHAI_NLOHMANN_JSON_EXPAND(DEPTHAI_NLOHMANN_JSON_PASTE(DEPTHAI_NLOHMANN_JSON_OPTIONAL_FROM, __VA_ARGS__))
+//     }
+// #define DEPTHAI_NLOHMANN_DEFINE_TYPE_OPTIONAL_INTRUSIVE(Type, ...)
+//     friend void to_json(nlohmann::json& nlohmann_json_j, const Type& nlohmann_json_t) {
+//         DEPTHAI_NLOHMANN_JSON_EXPAND(DEPTHAI_NLOHMANN_JSON_PASTE(DEPTHAI_NLOHMANN_JSON_OPTIONAL_TO, __VA_ARGS__))
+//     }
+//     friend void from_json(const nlohmann::json& nlohmann_json_j, Type& nlohmann_json_t) {
+//         DEPTHAI_NLOHMANN_JSON_EXPAND(DEPTHAI_NLOHMANN_JSON_PASTE(DEPTHAI_NLOHMANN_JSON_OPTIONAL_FROM, __VA_ARGS__))
+//     }
+
 // Macros
+// #define DEPTHAI_SERIALIZE_OPTIONAL_EXT(...)
+//     DEPTHAI_DEFERRED_EXPAND(DEPTHAI_NLOHMANN_DEFINE_TYPE_OPTIONAL_NON_INTRUSIVE(__VA_ARGS__))
+//     DEPTHAI_DEFERRED_EXPAND(NOP_EXTERNAL_STRUCTURE(__VA_ARGS__))
+
+// #define DEPTHAI_SERIALIZE_OPTIONAL(...)
+//     DEPTHAI_DEFERRED_EXPAND(DEPTHAI_NLOHMANN_DEFINE_TYPE_OPTIONAL_INTRUSIVE(__VA_ARGS__))
+//     DEPTHAI_DEFERRED_EXPAND(NOP_EXTERNAL_STRUCTURE(__VA_ARGS__))
+
 // #define DEPTHAI_SERIALIZE_EXT(...)
-//     DEPTHAI_DEFERRED_EXPAND(NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(__VA_ARGS__))
+//     DEPTHAI_DEFERRED_EXPAND(DEPTHAI_NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE(__VA_ARGS__))
 //     DEPTHAI_DEFERRED_EXPAND(NOP_EXTERNAL_STRUCTURE(__VA_ARGS__))
 
 // #define DEPTHAI_SERIALIZE(...)
-//     DEPTHAI_DEFERRED_EXPAND(NLOHMANN_DEFINE_TYPE_INTRUSIVE(__VA_ARGS__))
+//     DEPTHAI_DEFERRED_EXPAND(DEPTHAI_NLOHMANN_DEFINE_TYPE_INTRUSIVE(__VA_ARGS__))
 //     DEPTHAI_DEFERRED_EXPAND(NOP_STRUCTURE(__VA_ARGS__))
 
 
@@ -515,6 +537,20 @@ public enum DetectionNetworkType { YOLO(0), MOBILENET(1);
     @Override public String toString() { return intern().name(); }
 }
 
+
+// Parsed from depthai-shared/common/DetectionParserOptions.hpp
+
+// #pragma once
+
+// #include "depthai-shared/common/DetectionNetworkType.hpp"
+// #include "depthai-shared/utility/Serialization.hpp"
+// Targeting ../DetectionParserOptions.java
+
+
+
+
+
+  // namespace dai
 
 // Parsed from depthai-shared/common/MemoryInfo.hpp
 
@@ -699,6 +735,10 @@ public enum DetectionNetworkType { YOLO(0), MOBILENET(1);
 // Targeting ../EepromData.java
 
 
+
+@Namespace("dai") public static native void to_json(@Cast("nlohmann::json*") @ByRef Pointer nlohmann_json_j, @Const @ByRef EepromData nlohmann_json_t);
+    @Namespace("dai") public static native void from_json(@Cast("const nlohmann::json*") @ByRef Pointer nlohmann_json_j, @ByRef EepromData nlohmann_json_t);
+    
 
   // namespace dai
 
@@ -1156,6 +1196,7 @@ public static final int BOARD_CONFIG_MAGIC2 = BOARD_CONFIG_MAGIC2();
 
 
 
+
   // namespace dai
 
 
@@ -1263,6 +1304,9 @@ public static final int XLINK_MESSAGE_METADATA_MAX_SIZE = XLINK_MESSAGE_METADATA
 // Targeting ../DetectionNetworkPropertiesSerializable.java
 
 
+// Targeting ../DetectionParserPropertiesSerializable.java
+
+
 // Targeting ../ObjectTrackerPropertiesSerializable.java
 
 
@@ -1314,6 +1358,7 @@ public static final int XLINK_MESSAGE_METADATA_MAX_SIZE = XLINK_MESSAGE_METADATA
 
 // #pragma once
 
+// #include "depthai-shared/common/optional.hpp"
 // #include "depthai-shared/datatype/RawIMUData.hpp"
 // #include "depthai-shared/properties/Properties.hpp"
 
@@ -1556,9 +1601,29 @@ public static final int XLINK_MESSAGE_METADATA_MAX_SIZE = XLINK_MESSAGE_METADATA
 
 // project
 // #include "NeuralNetworkProperties.hpp"
-// #include "depthai-shared/common/DetectionNetworkType.hpp"
+// #include "depthai-shared/common/DetectionParserOptions.hpp"
 // #include "depthai-shared/common/optional.hpp"
 // Targeting ../DetectionNetworkProperties.java
+
+
+
+
+
+  // namespace dai
+
+
+// Parsed from depthai-shared/properties/DetectionParserProperties.hpp
+
+// #pragma once
+
+// #include <vector>
+
+// #include "depthai-shared/common/DetectionParserOptions.hpp"
+// #include "depthai-shared/common/TensorInfo.hpp"
+// #include "depthai-shared/common/optional.hpp"
+// #include "depthai-shared/datatype/RawEdgeDetectorConfig.hpp"
+// #include "depthai-shared/properties/Properties.hpp"
+// Targeting ../DetectionParserProperties.java
 
 
 
@@ -2241,6 +2306,9 @@ public static native @Cast("std::ostream*") @ByRef @Name("operator <<") Pointer 
 // Targeting ../YoloSpatialDetectionNetworkPropertiesNode.java
 
 
+// Targeting ../DetectionParserPropertiesNode.java
+
+
 // Targeting ../SpatialLocationCalculatorPropertiesNode.java
 
 
@@ -2307,6 +2375,7 @@ public static native @Cast("std::ostream*") @ByRef @Name("operator <<") Pointer 
 // #include "node/AprilTag.hpp"
 // #include "node/ColorCamera.hpp"
 // #include "node/DetectionNetwork.hpp"
+// #include "node/DetectionParser.hpp"
 // #include "node/EdgeDetector.hpp"
 // #include "node/FeatureTracker.hpp"
 // #include "node/IMU.hpp"
@@ -2477,6 +2546,25 @@ public static native @Cast("std::ostream*") @ByRef @Name("operator <<") Pointer 
 
 
 // Targeting ../YoloDetectionNetwork.java
+
+
+
+  // namespace node
+  // namespace dai
+
+
+// Parsed from depthai/pipeline/node/DetectionParser.hpp
+
+// #pragma once
+
+// #include <depthai/pipeline/Node.hpp>
+
+// standard
+// #include <fstream>
+
+// shared
+// #include <depthai-shared/properties/DetectionParserProperties.hpp>
+// Targeting ../DetectionParser.java
 
 
 
@@ -2736,14 +2824,14 @@ public static native @Cast("std::ostream*") @ByRef @Name("operator <<") Pointer 
 // #include <cstdint>
 
 // libraries
-// #include "nlohmann/json.hpp"
+// #include "NlohmannJsonCompat.hpp"
 
 // #define DEPTHAI_BOOTLOADER_NLOHMANN_JSON_OPTIONAL_TO(v1) nlohmann::to_json(nlohmann_json_j[#v1], nlohmann_json_t.v1);
 // #define DEPTHAI_BOOTLOADER_NLOHMANN_JSON_OPTIONAL_FROM(v1) if(nlohmann_json_j.contains(#v1)) nlohmann_json_j[#v1].get_to(nlohmann_json_t.v1);
 
 // #define DEPTHAI_BOOTLOADER_NLOHMANN_DEFINE_TYPE_OPTIONAL_NON_INTRUSIVE(Type, ...)
-//     inline void to_json(nlohmann::json& nlohmann_json_j, const Type& nlohmann_json_t) { NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(DEPTHAI_BOOTLOADER_NLOHMANN_JSON_OPTIONAL_TO, __VA_ARGS__)) }
-//     inline void from_json(const nlohmann::json& nlohmann_json_j, Type& nlohmann_json_t) { NLOHMANN_JSON_EXPAND(NLOHMANN_JSON_PASTE(DEPTHAI_BOOTLOADER_NLOHMANN_JSON_OPTIONAL_FROM, __VA_ARGS__)) }
+//     inline void to_json(nlohmann::json& nlohmann_json_j, const Type& nlohmann_json_t) { DEPTHAI_BOOTLOADER_NLOHMANN_JSON_EXPAND(DEPTHAI_BOOTLOADER_NLOHMANN_JSON_PASTE(DEPTHAI_BOOTLOADER_NLOHMANN_JSON_OPTIONAL_TO, __VA_ARGS__)) }
+//     inline void from_json(const nlohmann::json& nlohmann_json_j, Type& nlohmann_json_t) { DEPTHAI_BOOTLOADER_NLOHMANN_JSON_EXPAND(DEPTHAI_BOOTLOADER_NLOHMANN_JSON_PASTE(DEPTHAI_BOOTLOADER_NLOHMANN_JSON_OPTIONAL_FROM, __VA_ARGS__)) }
 // Targeting ../NetworkConfig.java
 
 

@@ -77,6 +77,7 @@ public class DeviceBase extends Pointer {
      * @param timeout duration of time to wait for the any device
      * @return Tuple of bool and DeviceInfo. Bool specifies if device was found. DeviceInfo specifies the found device
      */
+    public static native @ByVal @Cast("std::tuple<bool,dai::DeviceInfo>*") Pointer getAnyAvailableDevice(@ByVal @Cast("std::chrono::milliseconds*") Pointer timeout);
 
     /**
      * Gets any available device
@@ -84,6 +85,15 @@ public class DeviceBase extends Pointer {
      * @return Tuple of bool and DeviceInfo. Bool specifies if device was found. DeviceInfo specifies the found device
      */
     public static native @ByVal @Cast("std::tuple<bool,dai::DeviceInfo>*") Pointer getAnyAvailableDevice();
+
+    /**
+     * Waits for any available device with a timeout
+     *
+     * @param timeout duration of time to wait for the any device
+     * @param cb callback function called between pooling intervals
+     * @return Tuple of bool and DeviceInfo. Bool specifies if device was found. DeviceInfo specifies the found device
+     */
+    public static native @ByVal @Cast("std::tuple<bool,dai::DeviceInfo>*") Pointer getAnyAvailableDevice(@ByVal @Cast("std::chrono::milliseconds*") Pointer timeout, Callback cb);
 
     /**
      * Gets first available device. Device can be either in XLINK_UNBOOTED or XLINK_BOOTLOADER state
@@ -493,6 +503,12 @@ public class DeviceBase extends Pointer {
     public native @ByVal CpuUsage getLeonMssCpuUsage();
 
     /**
+     * Check if EEPROM is available
+     * @return True if EEPROM is present on board, false otherwise
+     */
+    public native @Cast("bool") boolean isEepromAvailable();
+
+    /**
      * Stores the Calibration and Device information to the Device EEPROM
      *
      * @param calibrationObj CalibrationHandler object which is loaded with calibration information.
@@ -502,11 +518,68 @@ public class DeviceBase extends Pointer {
     public native @Cast("bool") boolean flashCalibration(@ByVal CalibrationHandler calibrationDataHandler);
 
     /**
+     * Stores the Calibration and Device information to the Device EEPROM
+     *
+     * @throws std::runtime_exception if failed to flash the calibration
+     * @param calibrationObj CalibrationHandler object which is loaded with calibration information.
+     */
+    public native void flashCalibration2(@ByVal CalibrationHandler calibrationDataHandler);
+
+    /**
      * Fetches the EEPROM data from the device and loads it into CalibrationHandler object
+     * If no calibration is flashed, it returns default
      *
      * @return The CalibrationHandler object containing the calibration currently flashed on device EEPROM
      */
     public native @ByVal CalibrationHandler readCalibration();
+
+    /**
+     * Fetches the EEPROM data from the device and loads it into CalibrationHandler object
+     *
+     * @throws std::runtime_exception if no calibration is flashed
+     * @return The CalibrationHandler object containing the calibration currently flashed on device EEPROM
+     */
+    public native @ByVal CalibrationHandler readCalibration2();
+
+    /**
+     * Fetches the EEPROM data from the device and loads it into CalibrationHandler object
+     * If no calibration is flashed, it returns default
+     *
+     * @return The CalibrationHandler object containing the calibration currently flashed on device EEPROM
+     */
+    public native @ByVal CalibrationHandler readCalibrationOrDefault();
+
+    /**
+     * Factory reset EEPROM data if factory backup is available.
+     *
+     * @throws std::runtime_exception If factory reset was unsuccessful
+     */
+    public native void factoryResetCalibration();
+
+    /**
+     * Stores the Calibration and Device information to the Device EEPROM in Factory area
+     * To perform this action, correct env variable must be set
+     *
+     * @throws std::runtime_exception if failed to flash the calibration
+     * @return True on successful flash, false on failure
+     */
+    public native void flashFactoryCalibration(@ByVal CalibrationHandler calibrationHandler);
+
+    /**
+     * Fetches the EEPROM data from Factory area and loads it into CalibrationHandler object
+     *
+     * @throws std::runtime_exception if no calibration is flashed
+     * @return The CalibrationHandler object containing the calibration currently flashed on device EEPROM in Factory Area
+     */
+    public native @ByVal CalibrationHandler readFactoryCalibration();
+
+    /**
+     * Fetches the EEPROM data from Factory area and loads it into CalibrationHandler object
+     * If no calibration is flashed, it returns default
+     *
+     * @return The CalibrationHandler object containing the calibration currently flashed on device EEPROM in Factory Area
+     */
+    public native @ByVal CalibrationHandler readFactoryCalibrationOrDefault();
 
     /**
      * Retrieves USB connection speed

@@ -12,7 +12,7 @@ if [[ "$EXTENSION" == *gpu ]]; then
     export CMAKE_FLAGS="-DTFLITE_ENABLE_GPU=ON"
 fi
 
-TENSORFLOW_VERSION=2.9.0-rc1
+TENSORFLOW_VERSION=2.9.1
 download https://github.com/tensorflow/tensorflow/archive/v$TENSORFLOW_VERSION.tar.gz tensorflow-$TENSORFLOW_VERSION.tar.gz
 
 mkdir -p "$PLATFORM$EXTENSION"
@@ -28,6 +28,18 @@ mkdir -p build
 cd build
 
 case $PLATFORM in
+    android-arm)
+        export CMAKE_FLAGS="-DCMAKE_TOOLCHAIN_FILE=${PLATFORM_ROOT}/build/cmake/android.toolchain.cmake -DANDROID_ABI=armeabi-v7a -DANDROID_NATIVE_API_LEVEL=24 $CMAKE_FLAGS"
+        ;;
+    android-arm64)
+        export CMAKE_FLAGS="-DCMAKE_TOOLCHAIN_FILE=${PLATFORM_ROOT}/build/cmake/android.toolchain.cmake -DANDROID_ABI=arm64-v8a -DANDROID_NATIVE_API_LEVEL=24 $CMAKE_FLAGS"
+        ;;
+    android-x86)
+        export CMAKE_FLAGS="-DCMAKE_TOOLCHAIN_FILE=${PLATFORM_ROOT}/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86 -DANDROID_NATIVE_API_LEVEL=24 $CMAKE_FLAGS"
+        ;;
+    android-x86_64)
+        export CMAKE_FLAGS="-DCMAKE_TOOLCHAIN_FILE=${PLATFORM_ROOT}/build/cmake/android.toolchain.cmake -DANDROID_ABI=x86_64 -DANDROID_NATIVE_API_LEVEL=24 $CMAKE_FLAGS"
+        ;;
     linux-armhf)
         export CC="arm-linux-gnueabihf-gcc -funsafe-math-optimizations"
         export CXX="arm-linux-gnueabihf-g++ -funsafe-math-optimizations"

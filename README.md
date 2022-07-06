@@ -177,7 +177,7 @@ The JavaCPP Presets depend on Maven, a powerful build system for Java, so before
 
 Each child module in turn relies by default on the included [`cppbuild.sh` scripts](#the-cppbuildsh-scripts), explained below, to install its corresponding native libraries in the `cppbuild` subdirectory. To use native libraries already installed somewhere else on the system, other installation directories than `cppbuild` can also be specified either in the `pom.xml` files or in the `.java` configuration files. The following versions are supported:
 
- * OpenCV 4.5.5  https://opencv.org/releases.html
+ * OpenCV 4.6.x  https://opencv.org/releases.html
  * FFmpeg 5.0.x  http://ffmpeg.org/download.html
  * FlyCapture 2.13.x  https://www.flir.com/products/flycapture-sdk
  * Spinnaker 2.4.x https://www.flir.com/products/spinnaker-sdk
@@ -203,9 +203,9 @@ Each child module in turn relies by default on the included [`cppbuild.sh` scrip
  * FFTW 3.3.10  http://www.fftw.org/download.html
  * GSL 2.7  http://www.gnu.org/software/gsl/#downloading
  * CPython 3.10.x  https://www.python.org/downloads/
- * NumPy 1.22.x  https://github.com/numpy/numpy
- * SciPy 1.8.x  https://github.com/scipy/scipy
- * Gym 0.23.x  https://github.com/openai/gym
+ * NumPy 1.23.x  https://github.com/numpy/numpy
+ * SciPy 1.9.x  https://github.com/scipy/scipy
+ * Gym 0.24.x  https://github.com/openai/gym
  * LLVM 14.0.x  http://llvm.org/releases/download.html
  * libffi 3.4.x  https://github.com/libffi/libffi
  * libpostal 1.1  https://github.com/openvenues/libpostal
@@ -218,22 +218,22 @@ Each child module in turn relies by default on the included [`cppbuild.sh` scrip
    * NCCL 2.12.x  https://developer.nvidia.com/nccl
  * NVIDIA Video Codec SDK 11.1.x  https://developer.nvidia.com/nvidia-video-codec-sdk
  * OpenCL 3.0.x  https://github.com/KhronosGroup/OpenCL-ICD-Loader
- * MXNet 1.9.0  https://github.com/apache/incubator-mxnet
- * PyTorch 1.11.x  https://github.com/pytorch/pytorch
+ * MXNet 1.9.x  https://github.com/apache/incubator-mxnet
+ * PyTorch 1.12.x  https://github.com/pytorch/pytorch
  * TensorFlow 1.15.x  https://github.com/tensorflow/tensorflow
  * TensorFlow Lite 2.9.x  https://github.com/tensorflow/tensorflow
  * TensorRT 8.x  https://developer.nvidia.com/tensorrt
- * Triton Inference Server 2.20.x  https://developer.nvidia.com/nvidia-triton-inference-server
+ * Triton Inference Server 2.21.x  https://developer.nvidia.com/nvidia-triton-inference-server
  * The Arcade Learning Environment 0.7.x  https://github.com/mgbellemare/Arcade-Learning-Environment
- * DepthAI 2.15.x  https://github.com/luxonis/depthai-core
- * ONNX 1.11.x  https://github.com/onnx/onnx
+ * DepthAI 2.16.x  https://github.com/luxonis/depthai-core
+ * ONNX 1.12.x  https://github.com/onnx/onnx
  * nGraph 0.26.0  https://github.com/NervanaSystems/ngraph
  * ONNX Runtime 1.11.x  https://github.com/microsoft/onnxruntime
  * TVM 0.8.x  https://github.com/apache/tvm
  * Bullet Physics SDK 3.24  https://pybullet.org
  * LiquidFun  http://google.github.io/liquidfun/
  * Qt 5.15.x  https://download.qt.io/archive/qt/
- * Mono/Skia 2.80.x  https://github.com/mono/skia
+ * Mono/Skia 2.88.x  https://github.com/mono/skia
  * cpu_features 0.7.0  https://github.com/google/cpu_features
  * ModSecurity 3.0.x  https://github.com/SpiderLabs/ModSecurity
  * System APIs of the build environments:
